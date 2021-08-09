@@ -48,8 +48,11 @@ int	main(int argc, char **argv, char **env)
 	int	pid;
 	int	fd[2];
 
-	if (argc < 1)
-		error_exit("Not enough arguments");
+	if (argc < 5)
+	{
+		ft_putstr_fd("Not enough arguments\n", 2);
+		return (1);
+	}
 	if (pipe(fd) == -1)
 		error_exit("./pipex");
 	pid = fork();
