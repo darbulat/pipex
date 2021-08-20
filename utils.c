@@ -20,6 +20,16 @@ char	*get_path_by_key(char **env, char *key)
 	return (NULL);
 }
 
+void	free_strs(char **strs)
+{
+	int	i;
+
+	i = 0;
+	while (strs[i])
+		free(strs[i++]);
+	free(strs);
+}
+
 char	*get_command_path(char **env, char *cmd)
 {
 	char	*path;
@@ -37,25 +47,26 @@ char	*get_command_path(char **env, char *cmd)
 		if (access(path, 0) == 0)
 		{
 			free(tmp_command);
+			free_strs(paths);
 			return (path);
 		}
 		i++;
 		free(path);
 	}
+	free_strs(paths);
+	free(tmp_command);
 	return (NULL);
 }
 
 char	*get_file_path(char *file, char **env)
 {
-	char	*command_path;
 	char	*tmp_path;
 	char	*file_path;
 
 	if (file[0] == '/')
 		return (file);
-	command_path = get_path_by_key(env, "PWD=");
 	tmp_path = ft_strjoin("/", file);
-	file_path = ft_strjoin(command_path, tmp_path);
+	file_path = ft_strjoin(get_path_by_key(env, "PWD="), tmp_path);
 	free(tmp_path);
 	return (file_path);
 }

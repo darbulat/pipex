@@ -53,8 +53,10 @@ char	**ft_split(char const *str, char c)
 	int		i;
 	int		count_words;
 	char	*s;
+	char	*tmp;
 
 	s = ft_strdup(str);
+	tmp = s;
 	count_words = ft_count_words(s, c);
 	strs = malloc(sizeof(char *) * (count_words + 1));
 	if ((void *)0 == strs)
@@ -65,6 +67,7 @@ char	**ft_split(char const *str, char c)
 		strs[i] = ft_get_first_word(&s, c);
 		i++;
 	}
+	free(tmp);
 	strs[i] = (void *)0;
 	return (strs);
 }

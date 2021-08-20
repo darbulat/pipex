@@ -15,5 +15,6 @@ char	*get_file_path(char *file, char **env);
 char	*get_command_path(char **env, char *cmd);
 char	*get_path_by_key(char **env, char *key);
 void	error_exit(const char *error);
+void	free_strs(char **strs);
 
 #endif //PIPEX_H
