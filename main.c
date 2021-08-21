@@ -21,7 +21,6 @@ void	main_process(int *fd, char **argv, char **env)
 	path = get_command_path(env, cmd[0]);
 	free(path);
 	free_strs(cmd);
-	while (1);
 	if (execve(path, cmd, NULL) == -1)
 		error_exit(cmd[0]);
 }
