@@ -62,11 +62,13 @@ char	*get_file_path(char *file, char **env)
 {
 	char	*tmp_path;
 	char	*file_path;
+	char	*path;
 
 	if (file[0] == '/')
 		return (file);
+	path = get_path_by_key(env, "PWD=");
 	tmp_path = ft_strjoin("/", file);
-	file_path = ft_strjoin(get_path_by_key(env, "PWD="), tmp_path);
+	file_path = ft_strjoin(path, tmp_path);
 	free(tmp_path);
 	return (file_path);
 }

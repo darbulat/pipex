@@ -1,19 +1,25 @@
-SRCS 		= 	main.c utils.c libft/libft.a
+SRCS 		= 	main.c utils.c
+LIB			=	libft/libft.a
 NAME		= 	pipex
 INCS		=	libft -I ./
 GCC			=	gcc
 CHECKER		=	checker
 CFLAGS		=	-Werror -Wextra -Wall
 RM			=	rm -f
+OBJS		=	$(SRCS:.c=.o)
+HEADERS		= 	pipex.h
 
 all:			${NAME}
 
-${NAME}:
+%.o: %.c
+	${GCC} ${CFLAGS} -c $< -o $@
+
+${NAME}: $(HEADERS) $(OBJS)
 	@make -C ./libft
-	${GCC} ${SRCS} -I${INCS} -o ${NAME}
+	${GCC} ${OBJS} ${LIB} -I${INCS} -o ${NAME}
 
 clean:
-				@${RM} @${NAME}
+				${RM} ${OBJS}
 				@make clean -C ./libft
 
 fclean:			clean
