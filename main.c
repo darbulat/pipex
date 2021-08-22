@@ -19,10 +19,10 @@ void	main_process(int *fd, char **argv, char **env)
 	free(file2);
 	dup2(fd_out, 1);
 	path = get_command_path(env, cmd[0]);
+	if (execve(path, cmd, NULL) == -1)
+		error_exit("Command not found");
 	free(path);
 	free_strs(cmd);
-	if (execve(path, cmd, NULL) == -1)
-		error_exit(cmd[0]);
 }
 
 void	child_process(int *fd, char **argv, char **env)
