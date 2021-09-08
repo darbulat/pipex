@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 	int	pid;
 	int	fd[2];
 
-	if (argc == 4)
+	if (argc != 5)
 	{
 		ft_putstr_fd("Wrong count of arguments\n", 2);
 		return (1);
