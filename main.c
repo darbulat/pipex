@@ -19,10 +19,8 @@ void	main_process(int *fd, char **argv, char **env)
 	free(file2);
 	dup2(fd_out, 1);
 	path = get_command_path(env, cmd[0]);
-	if (execve(path, cmd, NULL) == -1)
+	if (execve(path, cmd, env) == -1)
 		error_exit("Command not found");
-	free(path);
-	free_strs(cmd);
 }
 
 void	child_process(int *fd, char **argv, char **env)
@@ -43,29 +41,36 @@ void	child_process(int *fd, char **argv, char **env)
 	dup2(fd_in, 0);
 	cmd = ft_split(argv[2], ' ');
 	path = get_command_path(env, cmd[0]);
-	if (execve(path, cmd, NULL) == -1)
+	if (execve(path, cmd, env) == -1)
 		error_exit("Command not found");
-	free_strs(cmd);
-	free(path);
+}
+
+void	process(char **argv, char **env)
+{
+	int	pid;
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+		error_exit("./pipex");
+	pid = fork();
+	if (pid == 0)
+		child_process(fd, argv, env);
+	else
+		main_process(fd, argv, env);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	int	pid;
-	int	fd[2];
 
 	if (argc != 5)
 	{
 		ft_putstr_fd("Wrong count of arguments\n", 2);
 		return (1);
 	}
-	if (pipe(fd) == -1)
-		error_exit("./pipex");
 	pid = fork();
 	if (pid == -1)
 		error_exit("Error while forking");
 	if (pid == 0)
-		child_process(fd, argv, env);
-	else
-		main_process(fd, argv, env);
+		process(argv, env);
 }
